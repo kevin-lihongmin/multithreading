@@ -2,7 +2,6 @@ package com.kevin.multithreading.util;
 
 
 import com.google.common.collect.Lists;
-import com.kevin.threads.safe.juc.aqs.source.atomic.AtomicInteger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  *  项目上可以直接使用的线程池工具类
@@ -202,7 +202,7 @@ public class SimpleThreadPool {
      * @param callableList
      * @return
      */
-    public static List<Future> executeAll(ThreadPoolEnum threadPoolEnum, List<Callable> callableList) {
+    /*public static List<Future> executeAll(ThreadPoolEnum threadPoolEnum, List<Callable> callableList) {
         if (!THREAD_POOL_EXECUTOR_MAP.containsKey(threadPoolEnum)) {
             throw new IllegalArgumentException("未配置线程池" + threadPoolEnum.name);
         }
@@ -214,7 +214,7 @@ public class SimpleThreadPool {
             logger.error("线程池批量执行任务异常失败", e);
         }
         return Lists.newArrayList();
-    }
+    }*/
 
     /**
      * 执行无返回的线程任务
