@@ -104,7 +104,7 @@ public class SimpleThreadPool {
     /**
      *  线程工厂
      */
-    static class DefaultThreadFactory implements ThreadFactory {
+    public static class DefaultThreadFactory implements ThreadFactory {
 
         /**
          *  定义线程组
