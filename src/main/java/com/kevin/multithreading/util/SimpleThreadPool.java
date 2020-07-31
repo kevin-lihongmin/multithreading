@@ -1,9 +1,6 @@
 package com.kevin.multithreading.util;
 
-
-import com.google.common.collect.Lists;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,30 +9,38 @@ import java.util.Map;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-/**
- *  项目上可以直接使用的线程池工具类
- *
- * @author lihongmin
- * @date 2019/2/23 17:51
- */
-public class SimpleThreadPool {
 
-    private static final Logger logger = LoggerFactory.getLogger(SimpleThreadPool.class);
+/**
+ * 线程池工具类
+ * @author lihongmin
+ * @date 2019/10/28 12:46
+ * @since 2.1.7
+ */
+@Slf4j
+public class SimpleThreadPool {
 
     /**
      *  线程池工具map
      */
-    public static final Map<ThreadPoolEnum, ThreadPoolExecutor> THREAD_POOL_EXECUTOR_MAP = new HashMap<ThreadPoolEnum, ThreadPoolExecutor>(16);
+    public static final Map<ThreadPoolEnum, ThreadPoolExecutor> THREAD_POOL_EXECUTOR_MAP = new ConcurrentHashMap<>(16);
 
     /**
      *  线程池集合枚举
      */
     public enum ThreadPoolEnum {
-        name1("skuInfo", "sku相关线程池", 5, 10, 10, TimeUnit.SECONDS, new LinkedBlockingDeque(10), new ThreadPoolExecutor.CallerRunsPolicy()),
-        name2("spuInfo", "spu相关线程池", 5, 10, 10, TimeUnit.SECONDS, new LinkedBlockingDeque(10), new ThreadPoolExecutor.CallerRunsPolicy());
+        /**
+         *  统计订单相关线程池
+         */
+        MANAGE("manage", "统计订单相关线程池", 5, 8, 30, TimeUnit.SECONDS,
+                new LinkedBlockingDeque(50), new ThreadPoolExecutor.AbortPolicy()),
+        /**
+         * 创建订单相关线程池
+         */
+        CREATE_ORDER("createOrder", "创建订单相关线程池", 5, 20, 60, TimeUnit.SECONDS,
+                new LinkedBlockingDeque(50), new ThreadPoolExecutor.CallerRunsPolicy());
 
-        ThreadPoolEnum(String name, String detail, int corePoolNum, int maxPoolNum, int deleteThreadNum, TimeUnit deleteTreadUnit, LinkedBlockingDeque blockingDeque, RejectedExecutionHandler rejectedExecutionHandler) {
-            this.name = name;
+        ThreadPoolEnum(String taskName, String detail, int corePoolNum, int maxPoolNum, int deleteThreadNum, TimeUnit deleteTreadUnit, LinkedBlockingDeque blockingDeque, RejectedExecutionHandler rejectedExecutionHandler) {
+            this.taskName = taskName;
             this.detail = detail;
             this.corePoolNum = corePoolNum;
             this.maxPoolNum = maxPoolNum;
@@ -48,7 +53,7 @@ public class SimpleThreadPool {
         /**
          *  先池名称
          */
-        private String name;
+        public String taskName;
 
         /**
          *  线程池说明
@@ -70,25 +75,25 @@ public class SimpleThreadPool {
         static Map<String, ThreadPoolEnum> map = new HashMap<String, ThreadPoolEnum>(16);
         static {
             for (ThreadPoolEnum threadPoolName : ThreadPoolEnum.values()) {
-                map.put(threadPoolName.getName(), threadPoolName);
+                map.put(threadPoolName.getTaskName(), threadPoolName);
             }
         }
 
         /**
          *  根据线程池名称获取线程池枚举
-         * @param name 线程池名称
+         * @param taskName 线程池名称
          * @return 线程池枚举
          */
-        public ThreadPoolEnum getThreadPoolEnum(String name) {
-            return map.get(name);
+        public ThreadPoolEnum getThreadPoolEnum(String taskName) {
+            return map.get(taskName);
         }
 
-        public String getName() {
-            return name;
+        public String getTaskName() {
+            return taskName;
         }
 
-        public void setName(String name) {
-            this.name = name;
+        public void setTaskName(String taskName) {
+            this.taskName = taskName;
         }
 
         public String getDetail() {
@@ -130,7 +135,7 @@ public class SimpleThreadPool {
         @Override
         public Thread newThread(Runnable runnable) {
             Thread thread = new Thread(threadGroup, runnable, namePrefix + THREAD_NUMBER.getAndIncrement(), 0);
-            if (thread.isDaemon()){
+            if (thread.isDaemon()) {
                 thread.setDaemon(false);
             }
             if(thread.getPriority() != Thread.NORM_PRIORITY){
@@ -144,8 +149,9 @@ public class SimpleThreadPool {
      *  初始化线程池
      */
     static {
-        THREAD_POOL_EXECUTOR_MAP.put(ThreadPoolEnum.name1, getThreadPoolExecutor(ThreadPoolEnum.name1));
-        THREAD_POOL_EXECUTOR_MAP.put(ThreadPoolEnum.name2, getThreadPoolExecutor(ThreadPoolEnum.name2));
+        for (ThreadPoolEnum threadPoolEnum : ThreadPoolEnum.values()) {
+            THREAD_POOL_EXECUTOR_MAP.put(threadPoolEnum, getThreadPoolExecutor(threadPoolEnum));
+        }
     }
 
     /**
@@ -158,7 +164,7 @@ public class SimpleThreadPool {
                 threadPoolEnum.deleteThreadNum,
                 threadPoolEnum.deleteTreadUnit,
                 threadPoolEnum.blockingDeque,
-                new DefaultThreadFactory(threadPoolEnum.name),
+                new DefaultThreadFactory(threadPoolEnum.taskName),
                 threadPoolEnum.rejectedExecutionHandler);
     }
 
@@ -169,7 +175,7 @@ public class SimpleThreadPool {
      */
     public static void execute(ThreadPoolEnum threadPoolEnum, Runnable runnable) {
         if (!THREAD_POOL_EXECUTOR_MAP.containsKey(threadPoolEnum)) {
-            throw new IllegalArgumentException("未找到线程池：" + threadPoolEnum.name);
+            throw new IllegalArgumentException("未找到线程池：" + threadPoolEnum.taskName);
         }
         // 执行任务
         THREAD_POOL_EXECUTOR_MAP.get(threadPoolEnum).execute(runnable);
@@ -185,7 +191,7 @@ public class SimpleThreadPool {
      */
     public static <T> List<Future<T>> execute(ThreadPoolEnum threadPoolEnum, Callable<T>... callable) {
         if (!THREAD_POOL_EXECUTOR_MAP.containsKey(threadPoolEnum)) {
-            throw new IllegalArgumentException("未配置线程池" + threadPoolEnum.name);
+            throw new IllegalArgumentException("未配置线程池" + threadPoolEnum.taskName);
         }
         ThreadPoolExecutor executor = THREAD_POOL_EXECUTOR_MAP.get(threadPoolEnum);
         List<Future<T>> futureList = new ArrayList<Future<T>>(callable.length);
@@ -202,19 +208,19 @@ public class SimpleThreadPool {
      * @param callableList
      * @return
      */
-    /*public static List<Future> executeAll(ThreadPoolEnum threadPoolEnum, List<Callable> callableList) {
+    public static <T> List<Future<T>> executeAll(ThreadPoolEnum threadPoolEnum, List<Callable<T>> callableList) {
         if (!THREAD_POOL_EXECUTOR_MAP.containsKey(threadPoolEnum)) {
-            throw new IllegalArgumentException("未配置线程池" + threadPoolEnum.name);
+            throw new IllegalArgumentException("未配置线程池" + threadPoolEnum.taskName);
         }
         try {
             return THREAD_POOL_EXECUTOR_MAP.get(threadPoolEnum).invokeAll(callableList, 2000, TimeUnit.MILLISECONDS);
         } catch (InterruptedException e) {
-            logger.error("线程池批量执行任务异常失败", e);
+            log.error("线程池批量执行任务异常失败", e);
         } catch (Exception e) {
-            logger.error("线程池批量执行任务异常失败", e);
+            log.error("线程池批量执行任务异常失败", e);
         }
-        return Lists.newArrayList();
-    }*/
+        return new ArrayList<>();
+    }
 
     /**
      * 执行无返回的线程任务
@@ -223,7 +229,7 @@ public class SimpleThreadPool {
      */
     public static void executeRunnable(ThreadPoolEnum threadPoolEnum, Runnable... r) {
         if (!THREAD_POOL_EXECUTOR_MAP.containsKey(threadPoolEnum)) {
-            throw new IllegalArgumentException("未配置线程池" + threadPoolEnum.name);
+            throw new IllegalArgumentException("未配置线程池" + threadPoolEnum.taskName);
         }
         ThreadPoolExecutor executor = THREAD_POOL_EXECUTOR_MAP.get(threadPoolEnum);
         for (int i = 0; i < r.length; i++) {
