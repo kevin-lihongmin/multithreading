@@ -12,6 +12,13 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  *  {@link java.util.concurrent.CompletableFuture#allOf(CompletableFuture[])} 的顺序问题
+ *
+ *  当前值为：1
+ * 当前值为：2
+ * 当前值为：3
+ * 当前值为：4
+ * StopWatch '': running time (millis) = 2125
+ *
  * @author kevin
  * @date 2020/8/13 21:43
  * @since 1.0.0
