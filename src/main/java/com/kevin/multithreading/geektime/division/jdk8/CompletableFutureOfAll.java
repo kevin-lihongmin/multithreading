@@ -23,7 +23,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @date 2020/8/13 21:43
  * @since 1.0.0
  */
-public class CompletabltFutureOfAll {
+public class CompletableFutureOfAll {
 
     public static void main(String[] args) {
         StopWatch stopWatch = new StopWatch();
