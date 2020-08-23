@@ -1,7 +1,7 @@
 package com.kevin.multithreading.geektime.division;
 
 
-import com.kevin.multithreading.util.SimpleThreadPool;
+import com.kevin.multithreading.util.OldSimpleThreadPool;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.kevin.multithreading.util.SimpleThreadPool.ThreadPoolEnum.CREATE_ORDER;
+import static com.kevin.multithreading.util.OldSimpleThreadPool.ThreadPoolEnum.CREATE_ORDER;
 
 /**
  *  模拟三个耗时任务 循环执行， 最后的加任务就是 Barrier【屏障】
@@ -115,7 +115,7 @@ public class CyclicBarrierDemo {
                 } catch (BrokenBarrierException e) {
                 }
             });
-            SimpleThreadPool.executeRunnable(CREATE_ORDER, task.toArray(new Runnable[0]));
+            OldSimpleThreadPool.executeRunnable(CREATE_ORDER, task.toArray(new Runnable[0]));
 
         }
     }

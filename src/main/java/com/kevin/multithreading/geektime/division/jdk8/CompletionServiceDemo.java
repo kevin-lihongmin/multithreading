@@ -1,7 +1,7 @@
 package com.kevin.multithreading.geektime.division.jdk8;
 
 
-import com.kevin.multithreading.util.SimpleThreadPool;
+import com.kevin.multithreading.util.OldSimpleThreadPool;
 
 import java.util.concurrent.*;
 
@@ -24,7 +24,7 @@ public class CompletionServiceDemo {
      *  获取线程池
      */
     private static final ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(100, 100,
-            0, TimeUnit.MILLISECONDS, new LinkedBlockingDeque<>(), new SimpleThreadPool.DefaultThreadFactory("test"));
+            0, TimeUnit.MILLISECONDS, new LinkedBlockingDeque<>(), new OldSimpleThreadPool.DefaultThreadFactory("test"));
     /**
      *  使用默认的无界队列 {@link java.util.concurrent.LinkedBlockingQueue}
      */

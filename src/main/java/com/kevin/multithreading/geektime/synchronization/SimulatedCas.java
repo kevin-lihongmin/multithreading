@@ -1,7 +1,7 @@
 package com.kevin.multithreading.geektime.synchronization;
 
 
-import com.kevin.multithreading.util.SimpleThreadPool;
+import com.kevin.multithreading.util.OldSimpleThreadPool;
 import lombok.Data;
 
 import java.util.concurrent.CountDownLatch;
@@ -44,7 +44,7 @@ public class SimulatedCas {
         SimulatedCas simulatedCas = new SimulatedCas();
         simulatedCas.setCount(0);
         ThreadPoolExecutor kevin = new ThreadPoolExecutor(300, 500, 0, TimeUnit.SECONDS,
-                new LinkedBlockingQueue<>(), new SimpleThreadPool.DefaultThreadFactory("kevin"),
+                new LinkedBlockingQueue<>(), new OldSimpleThreadPool.DefaultThreadFactory("kevin"),
                 new ThreadPoolExecutor.AbortPolicy());
         CountDownLatch countDownLatch = new CountDownLatch(10000);
         for (int i = 0; i < 10000; i++) {

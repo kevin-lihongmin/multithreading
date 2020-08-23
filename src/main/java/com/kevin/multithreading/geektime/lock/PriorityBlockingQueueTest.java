@@ -1,13 +1,12 @@
 package com.kevin.multithreading.geektime.lock;
 
-import com.kevin.multithreading.util.SimpleThreadPool;
+import com.kevin.multithreading.util.OldSimpleThreadPool;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.*;
@@ -33,7 +32,7 @@ public class PriorityBlockingQueueTest {
             };
             System.out.println("我添加了：" + num);
         }
-        List<Future<User>> futures = SimpleThreadPool.executeAll(SimpleThreadPool.ThreadPoolEnum.CREATE_ORDER, Arrays.asList(call));
+        List<Future<User>> futures = OldSimpleThreadPool.executeAll(OldSimpleThreadPool.ThreadPoolEnum.CREATE_ORDER, Arrays.asList(call));
 
 
         for (Future<User> future : futures) {
@@ -57,14 +56,14 @@ public class PriorityBlockingQueueTest {
             };
         }
 
-        SimpleThreadPool.execute(SimpleThreadPool.ThreadPoolEnum.CREATE_ORDER, call);
+        OldSimpleThreadPool.execute(OldSimpleThreadPool.ThreadPoolEnum.CREATE_ORDER, call);
         countDownLatch.await();
 
         queue.forEach(user -> {
             System.out.println(user.getId() + " !");
         });
 
-        List<Future<User>> futures = SimpleThreadPool.executeAll(SimpleThreadPool.ThreadPoolEnum.CREATE_ORDER, Arrays.asList(call));
+        List<Future<User>> futures = OldSimpleThreadPool.executeAll(OldSimpleThreadPool.ThreadPoolEnum.CREATE_ORDER, Arrays.asList(call));
 
 
         for (Future<User> future : futures) {

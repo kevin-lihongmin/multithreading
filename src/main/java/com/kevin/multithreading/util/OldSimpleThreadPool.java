@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @since 2.1.7
  */
 @Slf4j
-public class SimpleThreadPool {
+public class OldSimpleThreadPool {
 
     /**
      *  线程池工具map

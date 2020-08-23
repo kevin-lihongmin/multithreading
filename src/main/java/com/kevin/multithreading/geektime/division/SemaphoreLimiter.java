@@ -9,7 +9,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
-import static com.kevin.multithreading.util.SimpleThreadPool.DefaultThreadFactory;
+import static com.kevin.multithreading.util.OldSimpleThreadPool.DefaultThreadFactory;
 
 /**
  *  使用{@link Semaphore} 实现一个限流器

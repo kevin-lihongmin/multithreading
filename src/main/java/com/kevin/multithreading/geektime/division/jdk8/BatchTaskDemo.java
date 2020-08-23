@@ -1,7 +1,7 @@
 package com.kevin.multithreading.geektime.division.jdk8;
 
 
-import com.kevin.multithreading.util.SimpleThreadPool;
+import com.kevin.multithreading.util.OldSimpleThreadPool;
 
 import java.util.concurrent.*;
 
@@ -28,7 +28,7 @@ public class BatchTaskDemo {
      */
     public void demo() throws ExecutionException, InterruptedException {
         final ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(100, 100,
-                0, TimeUnit.MILLISECONDS, new LinkedBlockingDeque<>(), new SimpleThreadPool.DefaultThreadFactory("test"));
+                0, TimeUnit.MILLISECONDS, new LinkedBlockingDeque<>(), new OldSimpleThreadPool.DefaultThreadFactory("test"));
 
         final LinkedBlockingQueue<Integer> queue = new LinkedBlockingQueue<>();
 

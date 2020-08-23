@@ -1,7 +1,7 @@
 package com.kevin.multithreading.geektime.division.jdk8;
 
 
-import com.kevin.multithreading.util.SimpleThreadPool;
+import com.kevin.multithreading.util.OldSimpleThreadPool;
 import org.springframework.util.StopWatch;
 
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ public class CompletableFutureOfAll {
 
     public static void main(String[] args) {
         StopWatch stopWatch = new StopWatch();
-        ThreadPoolExecutor threadPoolExecutor = SimpleThreadPool.THREAD_POOL_EXECUTOR_MAP.get(SimpleThreadPool.ThreadPoolEnum.CREATE_ORDER);
+        ThreadPoolExecutor threadPoolExecutor = OldSimpleThreadPool.THREAD_POOL_EXECUTOR_MAP.get(OldSimpleThreadPool.ThreadPoolEnum.CREATE_ORDER);
 
         stopWatch.start();
         List<CompletableFuture<Object>> taskList = new ArrayList<>();
