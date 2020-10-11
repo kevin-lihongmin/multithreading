@@ -28,7 +28,7 @@ public class CompletionServiceDemo {
     /**
      *  使用默认的无界队列 {@link java.util.concurrent.LinkedBlockingQueue}
      */
-    public static final CompletionService<Integer> COMPLETION_SERVICE = new ExecutorCompletionService(threadPoolExecutor);
+    public static final CompletionService<Integer> COMPLETION_SERVICE = new ExecutorCompletionService<>(threadPoolExecutor);
 
     public static void main(String[] args) throws InterruptedException, ExecutionException {
         COMPLETION_SERVICE.submit(() -> {
