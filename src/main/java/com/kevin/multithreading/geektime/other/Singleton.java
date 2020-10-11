@@ -27,13 +27,7 @@ public class Singleton {
     /**
      *  单例对象
      */
-    private static Singleton singleton;
-
-    /**
-     *  构造私有化
-     */
-    private Singleton() {
-    }
+    private static volatile Singleton singleton;
 
     /**
      *  对外提供的单例对象，需要保证只初始化一次，每次获取同一对象
@@ -49,4 +43,9 @@ public class Singleton {
         return singleton;
     }
 
+    /**
+     *  构造私有化
+     */
+    private Singleton() {
+    }
 }
