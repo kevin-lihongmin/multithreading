@@ -32,7 +32,7 @@ public class Singleton {
     /**
      *  对外提供的单例对象，需要保证只初始化一次，每次获取同一对象
      */
-    public Singleton getInstance() {
+    public static Singleton getInstance() {
         if (singleton == null) {
             synchronized (Singleton.class) {
                 if (singleton == null) {
@@ -47,5 +47,10 @@ public class Singleton {
      *  构造私有化
      */
     private Singleton() {
+    }
+
+    public static void main(String[] args) {
+        Singleton instance = Singleton.getInstance();
+        System.out.println(instance);
     }
 }
