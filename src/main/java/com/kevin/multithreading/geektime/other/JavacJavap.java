@@ -1,5 +1,12 @@
-package com.kevin.multithreading.geektime.other.sync;
+package com.kevin.multithreading.geektime.other;
 
+/**
+ *  双重锁检查机制代码的 汇编代码和 javac / javap处理
+ *
+ * @author kevin
+ * @date 2020/10/21 10:22
+ * @since 1.0.0
+ */
 public class JavacJavap {
 
     /*Compiled from "Singleton.java"
