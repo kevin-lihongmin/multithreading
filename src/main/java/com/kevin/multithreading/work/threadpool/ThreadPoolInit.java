@@ -31,7 +31,7 @@ public class ThreadPoolInit {
         load.forEach(threadPool -> threadPool.appendThreadPool().forEach(SimpleThreadPool::putThreadPool));
 
         // 初始化线程池状态信息订单打印
-        printScheduledThreadStats();
+//        printScheduledThreadStats();
     }
 
     /**
