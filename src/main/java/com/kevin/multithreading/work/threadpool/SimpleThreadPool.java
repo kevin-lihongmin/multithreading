@@ -65,7 +65,7 @@ public class SimpleThreadPool extends ThreadPoolInit {
             throw new IllegalArgumentException("未配置线程池" + key);
         }
         try {
-            return THREAD_POOL_EXECUTOR_MAP.get(key).invokeAll(callableList, 2000, TimeUnit.MILLISECONDS);
+            return THREAD_POOL_EXECUTOR_MAP.get(key).invokeAll(callableList, 5000, TimeUnit.MILLISECONDS);
         } catch (InterruptedException e) {
             log.error("线程池批量执行任务异常失败", e);
         } catch (Exception e) {

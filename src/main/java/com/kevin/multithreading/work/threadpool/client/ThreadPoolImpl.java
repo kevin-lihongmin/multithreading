@@ -23,7 +23,7 @@ public class ThreadPoolImpl implements ThreadPool {
     public List<ThreadPoolEntity> appendThreadPool() {
         return Lists.newArrayList(
                 new ThreadPoolEntity(ThreadPoolEnum.ORDER.name(), ThreadPoolInit.PoolModel.IO,  Boolean.FALSE, Boolean.TRUE,
-                        "货源安排线程池【Per PO Per Thread】", 2, 8, 30, TimeUnit.SECONDS,
+                        "货源安排线程池【Per PO Per Thread】", 3, 8, 30, TimeUnit.SECONDS,
                         new LinkedBlockingDeque(50), new ThreadPoolExecutor.AbortPolicy())
             );
     }
