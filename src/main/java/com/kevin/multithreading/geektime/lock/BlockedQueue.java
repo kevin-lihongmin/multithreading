@@ -25,11 +25,11 @@ import java.util.concurrent.locks.ReentrantLock;
  * @date 2020/7/29 23:51
  * @since 1.0.0
  *
- * @see LinkedBlockingQueue#takeLock
- * @see LinkedBlockingQueue#putLock
+ * @see LinkedBlockingQueue #takeLock
+ * @see LinkedBlockingQueue #putLock
  *
- * @see LinkedBlockingQueue#notFull
- * @see LinkedBlockingQueue#notEmpty
+ * @see LinkedBlockingQueue #notFull
+ * @see LinkedBlockingQueue #notEmpty
  */
 public class BlockedQueue {
 
