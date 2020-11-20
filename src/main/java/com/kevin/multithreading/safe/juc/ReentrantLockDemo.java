@@ -6,14 +6,14 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- *   {@link java.util.concurrent.locks.ReentrantLock} 的demo
- * @author lihongmin
- * @date 2018/12/16
- * 16:31
+ *  {@link java.util.concurrent.locks.ReentrantLock} 的demo
+ * @author kevin
+ * @date 2020/11/11 11:31
+ * @since 1.0.0
  */
 public class ReentrantLockDemo implements Runnable {
 
-    private static Lock lock = new ReentrantLock();
+    private static final Lock lock = new ReentrantLock();
 
     private static volatile int count = 0;
 

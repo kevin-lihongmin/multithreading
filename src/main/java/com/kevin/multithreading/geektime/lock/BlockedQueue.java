@@ -45,12 +45,12 @@ public class BlockedQueue {
     /**
      *  入队操作
      */
-    /*void enqueue() throws InterruptedException {
+   /* void enqueue() throws InterruptedException {
         lock.lock();
         try {
             while (队列已满) {
                 // 等待队列不满
-                notFull.await();
+                notFull.signalAll();
             }
             // 省略入队操作
 
