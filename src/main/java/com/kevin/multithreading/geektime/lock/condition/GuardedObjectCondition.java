@@ -1,4 +1,4 @@
-package com.kevin.multithreading.designpattern;
+package com.kevin.multithreading.geektime.lock.condition;
 
 
 import java.util.concurrent.TimeUnit;
@@ -85,17 +85,17 @@ public final class GuardedObjectCondition<T> {
             sleep(100);
             guardedObject.get2(o -> false);
         }, "get2-1").start();
-        // 第三个线程进入CLH
+        /*// 第三个线程进入CLH
         new Thread(() -> {
             sleep(100);
             guardedObject.get2(o -> false);
-        }, "get2-2").start();
+        }, "get2-2").start();*/
 
-        // 第四个线程进入Condition等待队列
+        /*// 第四个线程进入Condition等待队列
         new Thread(() -> {
             sleep(1000);
             guardedObject.get(o -> false);
-        }, "get-2").start();
+        }, "get-2").start();*/
         // 第五个线程进入Condition等待队列
         new Thread(() -> {
             sleep(1000);
