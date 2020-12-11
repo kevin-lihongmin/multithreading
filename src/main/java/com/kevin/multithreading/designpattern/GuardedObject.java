@@ -1,6 +1,8 @@
 package com.kevin.multithreading.designpattern;
 
 
+import java.util.Objects;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
@@ -60,5 +62,29 @@ public final class GuardedObject<T> {
         } finally {
             lock.unlock();
         }
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        GuardedObject guardedObject = new GuardedObject();
+        CountDownLatch countDownLatch = new CountDownLatch(2);
+
+        new Thread(() -> {
+            // 1、执行AQS await的 addConditionWaiter(); fullyRelease(node);
+            guardedObject.get(Objects::nonNull); // 出自旋的条件是被保护的Object不为null
+
+            countDownLatch.countDown();
+        }).start();
+
+        // 线程创建一个线程，sleep一定时间，后唤醒自旋的主线程
+        new Thread(() -> {
+            try { Thread.sleep(5000L);  } catch (InterruptedException e) { e.printStackTrace(); }
+            // 2、执行AQS的signAll方法
+            guardedObject.onChange(new Object());
+            // 3、执行await中的 自旋线程
+
+            countDownLatch.countDown();
+        }).start();
+
+        countDownLatch.await();
     }
 }
